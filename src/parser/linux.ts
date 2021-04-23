@@ -34,7 +34,7 @@ export class LinuxParser extends BaseParser {
     }
     
     this._changeState(STATES.BODY);
-  };
+  }
   
   /**
    * Process output's body
@@ -43,7 +43,7 @@ export class LinuxParser extends BaseParser {
   _processBody(line: string) {
     // Reuse mac parser implementation
     MacParser.prototype._processBody.call(this, line);
-  };
+  }
   
   /**
    * Process output's footer
@@ -52,5 +52,5 @@ export class LinuxParser extends BaseParser {
   _processFooter(line: string) {
     // Reuse mac parser implementation
     MacParser.prototype._processFooter.call(this, line);
-  };
+  }
 }

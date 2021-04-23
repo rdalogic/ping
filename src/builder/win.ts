@@ -103,7 +103,7 @@ export class WinBuilder {
     ret.push(target);
     
     return ret;
-  };
+  }
   
   /**
    * Compute an option object for child_process.spawn
@@ -112,6 +112,6 @@ export class WinBuilder {
   static getSpawnOptions() {
     return {
       windowsHide: true,
-    };
-  };
+    }
+  }
 }

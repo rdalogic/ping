@@ -89,7 +89,7 @@ export class BaseParser {
     this._state = state;
     
     return this;
-  };
+  }
   
   /**
    * Process output's header
@@ -97,7 +97,7 @@ export class BaseParser {
    */
   _processHeader(line: string) {
     throw new Error('Subclass should implement this method');
-  };
+  }
   
   /**
    * Process output's body
@@ -105,7 +105,7 @@ export class BaseParser {
    */
   _processBody(line: string) {
     throw new Error('Subclass should implement this method');
-  };
+  }
   
   /**
    * Process output's footer
@@ -113,7 +113,7 @@ export class BaseParser {
    */
   _processFooter(line: string) {
     throw new Error('Subclass should implement this method');
-  };
+  }
   
   /**
    * Process a line from system ping
@@ -147,7 +147,7 @@ export class BaseParser {
     }
     
     return this;
-  };
+  }
   
   /**
    * Get results after parsing certain lines from system ping
@@ -202,5 +202,5 @@ export class BaseParser {
     }
     
     return ret;
-  };
+  }
 }

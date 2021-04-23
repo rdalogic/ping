@@ -1,6 +1,6 @@
 /**
- * A builder builds command line arguments for ping in linux environment
- * @module lib/builder/linux
+ * A builder builds command line arguments for ping in mac environment
+ * @module lib/builder/mac
  */
 import * as  util from 'util';
 import { PingConfig } from '../interfaces/ping-config.interface';
@@ -26,6 +26,7 @@ import { PingConfig } from '../interfaces/ping-config.interface';
  *                                          Window: 32 Bytes
  * @property {string[]} extra - Optional options does not provided
  */
+
 const DEFAULT_CONFIG: PingConfig = {
   numeric: true,
   timeout: 2,
@@ -37,15 +38,17 @@ const DEFAULT_CONFIG: PingConfig = {
   extra: [],
 };
 
-export class LinuxBuilder {
+export class MacBuilder {
+  
   /**
    * Get the finalized array of command line arguments
    * @param {string} target - hostname or ip address
    * @param {PingConfig} [config] - Configuration object for cmd line argument
    * @return {string[]} - Command line argument according to the configuration
+   * @throws If there are errors on building arguments with given inputs
    */
   static getCommandArguments(target: string, config: PingConfig): string[] {
-    const _config: PingConfig = config || {};
+    const _config = config || {};
     
     // Empty argument
     let ret = [];
@@ -65,15 +68,20 @@ export class LinuxBuilder {
     }
     
     if (_config.timeout) {
+      // XXX: There is no timeout option on mac's ping6
+      if (config.v6) {
+        throw new Error('There is no timeout option on ping6');
+      }
+      
       ret = ret.concat([
         '-W',
-        util.format('%d', _config.timeout),
+        util.format('%d', _config.timeout * 1000),
       ]);
     }
     
     if (_config.deadline) {
       ret = ret.concat([
-        '-w',
+        '-t',
         util.format('%d', _config.deadline),
       ]);
     }
@@ -87,7 +95,7 @@ export class LinuxBuilder {
     
     if (_config.sourceAddr) {
       ret = ret.concat([
-        '-I',
+        '-S',
         util.format('%s', _config.sourceAddr),
       ]);
     }
@@ -106,16 +114,13 @@ export class LinuxBuilder {
     ret.push(target);
     
     return ret;
-  };
+  }
   
   /**
    * Compute an option object for child_process.spawn
    * @return {object} - Refer to document of child_process.spawn
    */
   static getSpawnOptions() {
-    return {
-      shell: false,
-      env: Object.assign(process.env, {LANG: 'C'}),
-    };
-  };
+    return {};
+  }
 }

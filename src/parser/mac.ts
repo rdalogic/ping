@@ -24,7 +24,7 @@ export class MacParser extends BaseParser {
     this._response.numeric_host = tokens[2].slice(1, -2);
     
     this._changeState(STATES.BODY);
-  };
+  }
   
   /**
    * Process output's body
@@ -45,7 +45,7 @@ export class MacParser extends BaseParser {
     if (line.indexOf('---') >= 0) {
       this._changeState(STATES.FOOTER);
     }
-  };
+  }
   
   /**
    * Process output's footer
@@ -77,5 +77,5 @@ export class MacParser extends BaseParser {
       
       this._changeState(STATES.END);
     }
-  };
+  }
 }

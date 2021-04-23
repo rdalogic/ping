@@ -50,7 +50,7 @@ export class WinParser extends BaseParser {
     }
     
     this._changeState(STATES.BODY);
-  };
+  }
   
   /**
    * Process ipv6 output's body
@@ -91,7 +91,7 @@ export class WinParser extends BaseParser {
         }
       }
     }
-  };
+  }
   
   /**
    * Process ipv4 output's body
@@ -124,7 +124,7 @@ export class WinParser extends BaseParser {
         this._times.push(parseFloat(match[1]));
       }
     }
-  };
+  }
   
   /**
    * Process output's body
@@ -143,7 +143,7 @@ export class WinParser extends BaseParser {
     } else {
       this._processIPV4Body(line);
     }
-  };
+  }
   
   /**
    * Process output's footer
@@ -170,5 +170,5 @@ export class WinParser extends BaseParser {
         this._changeState(STATES.END);
       }
     }
-  };
+  }
 }
