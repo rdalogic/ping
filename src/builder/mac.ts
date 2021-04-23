@@ -2,8 +2,8 @@
  * A builder builds command line arguments for ping in mac environment
  * @module lib/builder/mac
  */
-import * as  util from 'util';
-import { PingConfig } from '../interfaces/ping-config.interface';
+import * as util from "util";
+import { PingConfig } from "../interfaces/ping-config.interface";
 
 /**
  * Cross platform config representation
@@ -33,13 +33,12 @@ const DEFAULT_CONFIG: PingConfig = {
   deadline: false,
   min_reply: 1,
   v6: false,
-  sourceAddr: '',
+  sourceAddr: "",
   packetSize: 56,
   extra: [],
 };
 
 export class MacBuilder {
-  
   /**
    * Get the finalized array of command line arguments
    * @param {string} target - hostname or ip address
@@ -49,73 +48,66 @@ export class MacBuilder {
    */
   static getCommandArguments(target: string, config: PingConfig): string[] {
     const _config = config || {};
-    
+
     // Empty argument
     let ret = [];
-    
+
     // Make every key in config has been setup properly
-    const keys = ['numeric', 'timeout', 'deadline', 'min_reply', 'v6',
-      'sourceAddr', 'extra', 'packetSize'];
+    const keys = [
+      "numeric",
+      "timeout",
+      "deadline",
+      "min_reply",
+      "v6",
+      "sourceAddr",
+      "extra",
+      "packetSize",
+    ];
     for (const key of keys) {
       // Falsy value will overrides without below checking
-      if (typeof (_config[key]) !== 'boolean') {
+      if (typeof _config[key] !== "boolean") {
         _config[key] = _config[key] || DEFAULT_CONFIG[key];
       }
     }
-    
+
     if (_config.numeric) {
-      ret.push('-n');
+      ret.push("-n");
     }
-    
+
     if (_config.timeout) {
       // XXX: There is no timeout option on mac's ping6
       if (config.v6) {
-        throw new Error('There is no timeout option on ping6');
+        throw new Error("There is no timeout option on ping6");
       }
-      
-      ret = ret.concat([
-        '-W',
-        util.format('%d', _config.timeout * 1000),
-      ]);
+
+      ret = ret.concat(["-W", util.format("%d", _config.timeout * 1000)]);
     }
-    
+
     if (_config.deadline) {
-      ret = ret.concat([
-        '-t',
-        util.format('%d', _config.deadline),
-      ]);
+      ret = ret.concat(["-t", util.format("%d", _config.deadline)]);
     }
-    
+
     if (_config.min_reply) {
-      ret = ret.concat([
-        '-c',
-        util.format('%d', _config.min_reply),
-      ]);
+      ret = ret.concat(["-c", util.format("%d", _config.min_reply)]);
     }
-    
+
     if (_config.sourceAddr) {
-      ret = ret.concat([
-        '-S',
-        util.format('%s', _config.sourceAddr),
-      ]);
+      ret = ret.concat(["-S", util.format("%s", _config.sourceAddr)]);
     }
-    
+
     if (_config.packetSize) {
-      ret = ret.concat([
-        '-s',
-        util.format('%d', _config.packetSize),
-      ]);
+      ret = ret.concat(["-s", util.format("%d", _config.packetSize)]);
     }
-    
+
     if (_config.extra) {
       ret = ret.concat(_config.extra);
     }
-    
+
     ret.push(target);
-    
+
     return ret;
   }
-  
+
   /**
    * Compute an option object for child_process.spawn
    * @return {object} - Refer to document of child_process.spawn

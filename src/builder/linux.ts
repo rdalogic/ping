@@ -2,8 +2,8 @@
  * A builder builds command line arguments for ping in linux environment
  * @module lib/builder/linux
  */
-import * as  util from 'util';
-import { PingConfig } from '../interfaces/ping-config.interface';
+import * as util from "util";
+import { PingConfig } from "../interfaces/ping-config.interface";
 
 /**
  * Cross platform config representation
@@ -32,7 +32,7 @@ const DEFAULT_CONFIG: PingConfig = {
   deadline: false,
   min_reply: 1,
   v6: false,
-  sourceAddr: '',
+  sourceAddr: "",
   packetSize: 56,
   extra: [],
 };
@@ -46,68 +46,61 @@ export class LinuxBuilder {
    */
   static getCommandArguments(target: string, config: PingConfig): string[] {
     const _config: PingConfig = config || {};
-    
+
     // Empty argument
     let ret = [];
-    
+
     // Make every key in config has been setup properly
-    const keys = ['numeric', 'timeout', 'deadline', 'min_reply', 'v6',
-      'sourceAddr', 'extra', 'packetSize'];
+    const keys = [
+      "numeric",
+      "timeout",
+      "deadline",
+      "min_reply",
+      "v6",
+      "sourceAddr",
+      "extra",
+      "packetSize",
+    ];
     for (const key of keys) {
       // Falsy value will overrides without below checking
-      if (typeof (_config[key]) !== 'boolean') {
+      if (typeof _config[key] !== "boolean") {
         _config[key] = _config[key] || DEFAULT_CONFIG[key];
       }
     }
-    
+
     if (_config.numeric) {
-      ret.push('-n');
+      ret.push("-n");
     }
-    
+
     if (_config.timeout) {
-      ret = ret.concat([
-        '-W',
-        util.format('%d', _config.timeout),
-      ]);
+      ret = ret.concat(["-W", util.format("%d", _config.timeout)]);
     }
-    
+
     if (_config.deadline) {
-      ret = ret.concat([
-        '-w',
-        util.format('%d', _config.deadline),
-      ]);
+      ret = ret.concat(["-w", util.format("%d", _config.deadline)]);
     }
-    
+
     if (_config.min_reply) {
-      ret = ret.concat([
-        '-c',
-        util.format('%d', _config.min_reply),
-      ]);
+      ret = ret.concat(["-c", util.format("%d", _config.min_reply)]);
     }
-    
+
     if (_config.sourceAddr) {
-      ret = ret.concat([
-        '-I',
-        util.format('%s', _config.sourceAddr),
-      ]);
+      ret = ret.concat(["-I", util.format("%s", _config.sourceAddr)]);
     }
-    
+
     if (_config.packetSize) {
-      ret = ret.concat([
-        '-s',
-        util.format('%d', _config.packetSize),
-      ]);
+      ret = ret.concat(["-s", util.format("%d", _config.packetSize)]);
     }
-    
+
     if (_config.extra) {
       ret = ret.concat(_config.extra);
     }
-    
+
     ret.push(target);
-    
+
     return ret;
   }
-  
+
   /**
    * Compute an option object for child_process.spawn
    * @return {object} - Refer to document of child_process.spawn
@@ -115,7 +108,7 @@ export class LinuxBuilder {
   static getSpawnOptions() {
     return {
       shell: false,
-      env: Object.assign(process.env, {LANG: 'C'}),
+      env: Object.assign(process.env, { LANG: "C" }),
     };
   }
 }

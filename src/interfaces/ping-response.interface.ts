@@ -11,5 +11,5 @@ export interface PingResponse {
   time: number | null;
   stddev: number | null;
   numeric_host?: string | null;
-  [index: string]:any;
+  [index: string]: any;
 }

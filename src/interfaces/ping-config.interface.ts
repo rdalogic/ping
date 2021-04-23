@@ -7,5 +7,5 @@ export interface PingConfig {
   packetSize: number;
   deadline?: boolean;
   timeout: number;
-  [index: string]:any;
+  [index: string]: any;
 }

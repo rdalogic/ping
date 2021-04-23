@@ -2,8 +2,8 @@
  * A builder builds command line arguments for ping in window environment
  * @module lib/builder/win
  */
-import * as util from 'util';
-import { PingConfig } from '../interfaces/ping-config.interface';
+import * as util from "util";
+import { PingConfig } from "../interfaces/ping-config.interface";
 
 /**
  * Cross platform config representation
@@ -24,13 +24,12 @@ const DEFAULT_CONFIG: PingConfig = {
   timeout: 5,
   min_reply: 1,
   v6: false,
-  sourceAddr: '',
+  sourceAddr: "",
   packetSize: 32,
   extra: [],
 };
 
 export class WinBuilder {
-  
   /**
    * Get the finalized array of command line arguments
    * @param {string} target - hostname or ip address
@@ -39,72 +38,65 @@ export class WinBuilder {
    */
   static getCommandArguments(target: string, config: PingConfig): string[] {
     const _config = config || {};
-    
+
     // Empty argument
     let ret = [];
-    
+
     // Make every key in config has been setup properly
     const keys = [
-      'numeric', 'timeout', 'min_reply', 'v6', 'sourceAddr', 'extra',
-      'packetSize',
+      "numeric",
+      "timeout",
+      "min_reply",
+      "v6",
+      "sourceAddr",
+      "extra",
+      "packetSize",
     ];
     for (const key of keys) {
       // Falsy value will overrides without below checking
-      if (typeof (_config[key]) !== 'boolean') {
+      if (typeof _config[key] !== "boolean") {
         _config[key] = _config[key] || DEFAULT_CONFIG[key];
       }
     }
-    
-    ret.push(_config.v6 ? '-6' : '-4');
-    
+
+    ret.push(_config.v6 ? "-6" : "-4");
+
     if (!_config.numeric) {
-      ret.push('-a');
+      ret.push("-a");
     }
-    
+
     if (_config.timeout) {
       // refs #56: Unit problem
       // Our timeout is in second while timeout in window is in milliseconds
       // so we need to convert our units accordingly
-      ret = ret.concat([
-        '-w',
-        util.format('%d', _config.timeout * 1000),
-      ]);
+      ret = ret.concat(["-w", util.format("%d", _config.timeout * 1000)]);
     }
-    
+
     if (_config.deadline) {
-      throw new Error('There is no deadline option on windows');
+      throw new Error("There is no deadline option on windows");
     }
-    
+
     if (_config.min_reply) {
-      ret = ret.concat([
-        '-n',
-        util.format('%d', _config.min_reply),
-      ]);
+      ret = ret.concat(["-n", util.format("%d", _config.min_reply)]);
     }
-    
+
     if (_config.sourceAddr) {
-      ret = ret.concat([
-        '-S',
-        util.format('%s', _config.sourceAddr),
-      ]);
+      ret = ret.concat(["-S", util.format("%s", _config.sourceAddr)]);
     }
-    
+
     if (_config.packetSize) {
-      ret = ret.concat([
-        '-l',
-        util.format('%d', _config.packetSize),
-      ]);
+      ret = ret.concat(["-l", util.format("%d", _config.packetSize)]);
     }
-    
+
     if (_config.extra) {
       ret = ret.concat(_config.extra);
     }
-    
+
     ret.push(target);
-    
+
     return ret;
   }
-  
+
   /**
    * Compute an option object for child_process.spawn
    * @return {object} - Refer to document of child_process.spawn
@@ -112,6 +104,6 @@ export class WinBuilder {
   static getSpawnOptions() {
     return {
       windowsHide: true,
-    }
+    };
   }
 }

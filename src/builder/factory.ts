@@ -1,48 +1,40 @@
-import * as util from 'util';
+import * as util from "util";
 
 // Our library
-import { LinuxBuilder } from './linux.js';
-import { MacBuilder } from './mac.js';
-import { WinBuilder } from './win.js';
+import { LinuxBuilder } from "./linux";
+import { MacBuilder } from "./mac";
+import { WinBuilder } from "./win";
 
 /**
  * A factory creates argument builders for different platform
  * @constructor
  */
 export class BuilderFactory {
-  
   /**
    * Check out linux platform
    */
   static isLinux(p: string): boolean {
-    const platforms = [
-      'aix',
-      'android',
-      'linux',
-    ];
-    
+    const platforms = ["aix", "android", "linux"];
+
     return platforms.indexOf(p) >= 0;
-  };
-  
+  }
+
   /**
    * Check out macos platform
    */
   static isMacOS(p: string): boolean {
-    const platforms = [
-      'darwin',
-      'freebsd',
-    ];
-    
+    const platforms = ["darwin", "freebsd"];
+
     return platforms.indexOf(p) >= 0;
-  };
-  
+  }
+
   /**
    * Check out window platform
    */
   static isWindow(p: string): boolean {
     return p?.match(/^win/) !== null;
-  };
-  
+  }
+
   /**
    * Check whether given platform is supported
    * @param {string} p - Name of the platform
@@ -50,8 +42,8 @@ export class BuilderFactory {
    */
   static isPlatformSupport(p: string): boolean {
     return this.isWindow(p) || this.isLinux(p) || this.isMacOS(p);
-  };
-  
+  }
+
   /**
    * Return a path to the ping executable in the system
    * @param platform - Name of the platform
@@ -61,24 +53,24 @@ export class BuilderFactory {
    */
   static getExecutablePath(platform: string, v6: boolean): string | null {
     if (!BuilderFactory.isPlatformSupport(platform)) {
-      throw new Error(util.format('Platform |%s| is not support', platform));
+      throw new Error(util.format("Platform |%s| is not support", platform));
     }
-    
+
     let ret = null;
-    
-    if (platform === 'aix') {
-      ret = '/usr/sbin/ping';
+
+    if (platform === "aix") {
+      ret = "/usr/sbin/ping";
     } else if (BuilderFactory.isLinux(platform)) {
-      ret = v6 ? 'ping6' : 'ping';
+      ret = v6 ? "ping6" : "ping";
     } else if (BuilderFactory.isWindow(platform)) {
-      ret = process.env.SystemRoot + '/system32/ping.exe';
+      ret = process.env.SystemRoot + "/system32/ping.exe";
     } else if (BuilderFactory.isMacOS(platform)) {
-      ret = v6 ? '/sbin/ping6' : '/sbin/ping';
+      ret = v6 ? "/sbin/ping6" : "/sbin/ping";
     }
-    
+
     return ret;
-  };
-  
+  }
+
   /**
    * Create a builder
    * @param {NodeJS.Platform} platform - Name of the platform
@@ -87,11 +79,11 @@ export class BuilderFactory {
    */
   static createBuilder(platform: NodeJS.Platform) {
     if (!BuilderFactory.isPlatformSupport(platform)) {
-      throw new Error(util.format('Platform |%s| is not support', platform));
+      throw new Error(util.format("Platform |%s| is not support", platform));
     }
-    
-    let ret = null;
-    
+
+    const ret = null;
+
     if (BuilderFactory.isLinux(platform)) {
       return LinuxBuilder;
     } else if (BuilderFactory.isWindow(platform)) {
@@ -99,7 +91,7 @@ export class BuilderFactory {
     } else if (BuilderFactory.isMacOS(platform)) {
       return MacBuilder;
     }
-    
+
     return ret;
-  };
+  }
 }

@@ -1,5 +1,5 @@
-import { PingConfig } from '../interfaces/ping-config.interface';
-import { PingResponse } from '../interfaces/ping-response.interface';
+import { PingConfig } from "../interfaces/ping-config.interface";
+import { PingResponse } from "../interfaces/ping-response.interface";
 
 /**
  * Parsed response
@@ -28,15 +28,14 @@ export enum STATES {
   END = 4,
 }
 
-export class BaseParser {
-  
+export abstract class BaseParser {
   protected _response: PingResponse;
   protected _times: any[];
   private _state: number;
   private _lines: any[];
   protected _pingConfig: PingConfig;
   private readonly _stripRegex: RegExp;
-  
+
   /**
    * @constructor
    *
@@ -46,7 +45,7 @@ export class BaseParser {
   constructor(addr: string, config: PingConfig) {
     // Initial state is 0
     this._state = 0;
-    
+
     // Initial cache value
     this._response = {
       inputHost: addr,
@@ -61,21 +60,20 @@ export class BaseParser {
       stddev: null,
       packetLoss: null,
     };
-    
+
     // Initial times storage for ping time
     this._times = [];
-    
+
     // Initial lines storage for ping output
     this._lines = [];
-    
+
     // strip string regexp
     this._stripRegex = /[ ]*\r?\n?$/g;
-    
+
     // Ping Config
     this._pingConfig = config || {};
   }
-  
-  
+
   /**
    * Change state of this parser
    * @param {number} state - parser.STATES
@@ -83,55 +81,46 @@ export class BaseParser {
    */
   _changeState(state: STATES) {
     if (!Object.values(STATES).includes(state)) {
-      throw new Error('Unknown state');
+      throw new Error("Unknown state");
     }
-    
+
     this._state = state;
-    
+
     return this;
   }
-  
+
   /**
    * Process output's header
    * @param {string} line - A line from system ping
    */
-  _processHeader(line: string) {
-    throw new Error('Subclass should implement this method');
-  }
-  
+  protected abstract _processHeader(line: string): void;
+
   /**
    * Process output's body
    * @param {string} line - A line from system ping
    */
-  _processBody(line: string) {
-    throw new Error('Subclass should implement this method');
-  }
-  
+  protected abstract _processBody(line: string): void;
+
   /**
    * Process output's footer
    * @param {string} line - A line from system ping
    */
-  _processFooter(line: string) {
-    throw new Error('Subclass should implement this method');
-  }
-  
+  protected abstract _processFooter(line: string): void;
+
   /**
    * Process a line from system ping
    * @param {string} line - A line from system ping
    * @return {this} - This instance
    */
   eat(line: string): BaseParser {
-    const headerStates = [
-      STATES.INIT,
-      STATES.HEADER,
-    ];
-    
+    const headerStates = [STATES.INIT, STATES.HEADER];
+
     // Store lines
     this._lines.push(line);
-    
+
     // Strip all space \r\n at the end
-    const _line = line.replace(this._stripRegex, '');
-    
+    const _line = line.replace(this._stripRegex, "");
+
     if (_line.length === 0) {
       // Do nothing if this is an empty line
     } else if (headerStates.indexOf(this._state) >= 0) {
@@ -143,25 +132,25 @@ export class BaseParser {
     } else if (this._state === STATES.END) {
       // Do nothing
     } else {
-      throw new Error('Unknown state');
+      throw new Error("Unknown state");
     }
-    
+
     return this;
   }
-  
+
   /**
    * Get results after parsing certain lines from system ping
    * @return {PingResponse} - Response from parsing ping output
    */
   getResult(): PingResponse {
-    const ret = {...this._response};
-    
+    const ret = { ...this._response };
+
     // Concat output
-    ret.output = this._lines.join('\n');
-    
+    ret.output = this._lines.join("\n");
+
     // Determine alive
     ret.alive = this._times.length > 0;
-    
+
     // Update time at first successful line
     if (ret.alive) {
       this._response.time = this._times[0];
@@ -169,38 +158,30 @@ export class BaseParser {
       this._response.times = this._times;
       ret.times = this._response.times;
     }
-    
+
     // Get stddev
-    if (
-      ret.stddev === null && ret.alive
-    ) {
+    if (ret.stddev === null && ret.alive) {
       const numberOfSamples = this._times.length;
-      
-      const sumOfAllSquareDifferences = this._times.reduce(
-        (memory, time) => {
-          const differenceFromMean = time - ret.avg;
-          const squaredDifference =
-            differenceFromMean * differenceFromMean;
-          return memory + squaredDifference;
-        },
-        0
-      );
+
+      const sumOfAllSquareDifferences = this._times.reduce((memory, time) => {
+        const differenceFromMean = time - ret.avg;
+        const squaredDifference = differenceFromMean * differenceFromMean;
+        return memory + squaredDifference;
+      }, 0);
       const variances = sumOfAllSquareDifferences / numberOfSamples;
-      
-      ret.stddev = Math.round(
-        Math.sqrt(variances) * 1000
-      ) / 1000;
+
+      ret.stddev = Math.round(Math.sqrt(variances) * 1000) / 1000;
     }
-    
+
     // Fix min, avg, max, stddev up to 3 decimal points
-    const keys = ['min', 'avg', 'max', 'stddev', 'packetLoss'];
+    const keys = ["min", "avg", "max", "stddev", "packetLoss"];
     for (const key of keys) {
       const v = ret[key];
-      if (typeof v === 'number') {
+      if (typeof v === "number") {
         ret[key] = v.toFixed(3);
       }
     }
-    
+
     return ret;
   }
 }
