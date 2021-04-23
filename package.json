@@ -1,7 +1,11 @@
 {
-  "name": "ping",
+  "author": "Dmytro Rybachuk <d.rybachuk@gmail.com> (https://github.com/d-rybachuk)",
+  "name": "@rdalogic/ping",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": ">=14"
+  },
   "files": [
     "lib/"
   ],
@@ -20,7 +24,6 @@
     "node-ping",
     "ping wrapper"
   ],
-  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rdalogic/ping/issues"
