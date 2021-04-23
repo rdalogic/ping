@@ -1,16 +1,11 @@
-# PING
+# @rdalogic/ping
 
-a ping wrapper for nodejs
+Simple and lightweight ES6  node-ping wrapper for the system ping utility with no 3-d part dependencies used.
 
-# LICENSE MIT
-
-(C) Dmytro Rybachuk
-
-https://github.com/rdalogic/ping.git
-
-# DESCRIPTION
-
-node-ping is a simple wrapper for the system ping utility
+Supported OS:
+- linux
+- windows
+- macOS
 
 # INSTALLATION
 
@@ -176,3 +171,9 @@ for(let host of hosts){
 
 * By setting `numeric`, `timeout` or `min_reply` to false, you can run `ping`
   without corresponding arguments.
+
+# LICENSE MIT
+
+(C) Dmytro Rybachuk
+
+https://github.com/rdalogic/ping.git
