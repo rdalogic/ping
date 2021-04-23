@@ -1,8 +1,8 @@
 {
   "author": "Dmytro Rybachuk <d.rybachuk@gmail.com> (https://github.com/d-rybachuk)",
   "name": "@rdalogic/ping",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.2",
+  "description": "a ping wrapper for nodejs",
   "engines": {
     "node": ">=14"
   },

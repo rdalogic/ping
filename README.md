@@ -37,10 +37,10 @@ import { ping } from '@rdalogic/ping'
 ## Tradition calls
 
 ```js
-var hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
+const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 hosts.forEach(function(host){
     ping.probeCb(host, function(isAlive){
-        var msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
+        const msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
         console.log(msg);
     });
 });
@@ -49,7 +49,7 @@ hosts.forEach(function(host){
 ## Tradition calls with configuration
 
 ```js
-var cfg = {
+const cfg = {
     timeout: 10,
     // WARNING: -i 2 may not work in other platform like windows
     extra: ['-i', '2'],
@@ -57,7 +57,7 @@ var cfg = {
 
 hosts.forEach(function(host){
     ping.probeCb(host, function(isAlive){
-        var msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
+        const msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
         console.log(msg);
     }, cfg);
 });
@@ -66,7 +66,7 @@ hosts.forEach(function(host){
 ## Promise wrapper
 
 ```js
-var hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
+const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 
 hosts.forEach(function (host) {
     ping.probe(host)
@@ -93,7 +93,7 @@ hosts.forEach(function (host) {
 
 ## Async-Await
 ```js
-var hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
+const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 
 for(let host of hosts){
     let res = await ping.probe(host);
@@ -103,7 +103,7 @@ for(let host of hosts){
 
 ## Async-Await with configurable ping options
 ```js
-var hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
+const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 
 for(let host of hosts){
      // WARNING: -i 2 argument may not work in other platform like windows

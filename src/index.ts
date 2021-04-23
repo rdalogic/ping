@@ -1,1 +1,1 @@
-export { Ping } from './ping';
+export { Ping } from './ping.js';
