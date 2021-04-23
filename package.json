@@ -1,7 +1,7 @@
 {
   "author": "Dmytro Rybachuk <d.rybachuk@gmail.com> (https://github.com/d-rybachuk)",
   "name": "@rdalogic/ping",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "a ping wrapper for nodejs",
   "engines": {
     "node": ">=14"
@@ -9,10 +9,12 @@
   "files": [
     "dist/"
   ],
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "module": "./dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "tsc": "tsc",
     "prepublish": "npm run tsc"
   },
   "type": "module",

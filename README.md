@@ -22,16 +22,10 @@ npm install @rdalogic/ping
 
 Below are examples extracted from `examples`
 
-## CommonJs imports
-
-```js
-const ping = require('@rdalogic/ping');
-```
-
 ## ES6 imports
 
 ```js
-import { ping } from '@rdalogic/ping'
+import { Ping } from '@rdalogic/ping'
 ```
 
 ## Tradition calls
@@ -39,7 +33,7 @@ import { ping } from '@rdalogic/ping'
 ```js
 const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 hosts.forEach(function(host){
-    ping.probeCb(host, function(isAlive){
+    Ping.probeCb(host, function(isAlive){
         const msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
         console.log(msg);
     });
@@ -56,7 +50,7 @@ const cfg = {
 };
 
 hosts.forEach(function(host){
-    ping.probeCb(host, function(isAlive){
+    Ping.probeCb(host, function(isAlive){
         const msg = isAlive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
         console.log(msg);
     }, cfg);
@@ -69,7 +63,7 @@ hosts.forEach(function(host){
 const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 
 hosts.forEach(function (host) {
-    ping.probe(host)
+    Ping.probe(host)
         .then(function (res) {
             console.log(res);
         });
@@ -81,7 +75,7 @@ hosts.forEach(function (host) {
 ```js
 hosts.forEach(function (host) {
     // WARNING: -i 2 argument may not work in other platform like windows
-    ping.probe(host, {
+    Ping.probe(host, {
         timeout: 10,
         extra: ['-i', '2'],
     }).then(function (res) {
@@ -96,7 +90,7 @@ hosts.forEach(function (host) {
 const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 
 for(let host of hosts){
-    let res = await ping.probe(host);
+    let res = await Ping.probe(host);
     console.log(res);
 }
 ```
@@ -107,7 +101,7 @@ const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
 
 for(let host of hosts){
      // WARNING: -i 2 argument may not work in other platform like windows
-    let res = await ping.probe(host, {
+    let res = await Ping.probe(host, {
            timeout: 10,
            extra: ['-i', '2'],
        });
