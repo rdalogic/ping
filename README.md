@@ -1,4 +1,13 @@
+<p align="center">
+  <a href="https://www.npmjs.com/package/@rdalogic/ping" target="_blank"><img src="https://img.shields.io/npm/v/@rdalogic/ping.svg" alt="NPM Version" /></a>
+  <a href="https://www.npmjs.com/package/@rdalogic/ping" target="_blank"><img src="https://img.shields.io/npm/l/@rdalogic/ping.svg" alt="Package License" /></a>
+  <a href="https://www.npmjs.com/package/@rdalogic/ping" target="_blank"><img src="https://img.shields.io/npm/dm/@rdalogic/ping.svg" alt="NPM Downloads" /></a>
+  <a href="https://coveralls.io/github/rdalogic/ping?branch=master"><img class="notice-badge" src="https://coveralls.io/repos/github/rdalogic/ping/badge.svg?branch=main" alt="Badge"></a>
+</p>
+
 # @rdalogic/ping
+
+## Description
 
 Simple and lightweight ES6 node-ping wrapper for the system ping utility with no 3-d part dependencies used.
 
@@ -8,13 +17,13 @@ Supported OS:
 - windows
 - macOS
 
-# INSTALLATION
+## INSTALLATION
 
 ```
 npm install @rdalogic/ping
 ```
 
-# USAGE
+## USAGE
 
 Below are examples extracted from `examples`
 
@@ -28,7 +37,7 @@ import {Ping} from '@rdalogic/ping'
 
 ```js
 const hosts = ['192.168.1.1', 'google.com', 'yahoo.com'];
-hosts.forEach(function (host) {
+hosts.forEach((host) => {
     Ping.probeCb(host, (res) => {
         const msg = res.alive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
         console.log(msg);
@@ -45,7 +54,7 @@ const cfg = {
     extra: ['-i', '2'],
 };
 
-hosts.forEach(function (host) {
+hosts.forEach((host) => {
     Ping.probeCb(host, (res) => {
         const msg = res.alive ? 'host ' + host + ' is alive' : 'host ' + host + ' is dead';
         console.log(msg);
@@ -173,7 +182,7 @@ for (let host of hosts) {
 * By setting `numeric`, `timeout` or `min_reply` to false, you can run `ping`
   without corresponding arguments.
 
-# LICENSE MIT
+## LICENSE MIT
 
 (C) Dmytro Rybachuk
 
