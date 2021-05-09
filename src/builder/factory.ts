@@ -16,7 +16,7 @@ export class BuilderFactory {
   static isLinux(p: string): boolean {
     const platforms = ["aix", "android", "linux"];
 
-    return platforms.indexOf(p) >= 0;
+    return platforms.includes(p);
   }
 
   /**
@@ -25,7 +25,7 @@ export class BuilderFactory {
   static isMacOS(p: string): boolean {
     const platforms = ["darwin", "freebsd"];
 
-    return platforms.indexOf(p) >= 0;
+    return platforms.includes(p);
   }
 
   /**

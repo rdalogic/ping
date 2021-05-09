@@ -123,7 +123,7 @@ export abstract class BaseParser {
 
     if (_line.length === 0) {
       // Do nothing if this is an empty line
-    } else if (headerStates.indexOf(this._state) >= 0) {
+    } else if (headerStates.includes(this._state)) {
       this._processHeader(_line);
     } else if (this._state === STATES.BODY) {
       this._processBody(_line);

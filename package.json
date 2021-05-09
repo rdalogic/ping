@@ -1,7 +1,7 @@
 {
   "author": "Dmytro Rybachuk <d.rybachuk@gmail.com> (https://github.com/d-rybachuk)",
   "name": "@rdalogic/ping",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "a ping wrapper for nodejs",
   "engines": {
     "node": ">=14"
@@ -15,9 +15,15 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "eslint 'src/**/*.ts' --fix",
+    "lint": "concurrently 'npm run lint:library' 'npm run lint:spec'",
+    "lint:fix": "concurrently 'npm run lint:library -- --fix' 'npm run lint:spec -- --fix'",
+    "lint:library": "eslint 'src/**/**.ts' --ignore-pattern 'src/**/*.spec.ts'",
+    "lint:spec": "eslint 'src/**/**.spec.ts' -c '.eslintrc.spec.js'",
     "tsc": "tsc",
-    "prepublish": "npm run tsc"
+    "prepublish": "npm run tsc",
+    "test": "jest --config=jest.json",
+    "test:watch": "jest --config=jest.json --watch",
+    "test:coverage": "jest --config=jest.json --coverage --coverageDirectory=coverage"
   },
   "repository": {
     "type": "git",
@@ -33,13 +39,17 @@
   },
   "homepage": "https://github.com/rdalogic/ping#readme",
   "devDependencies": {
-    "@types/node": "^14.14.41",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint": "^7.24.0",
-    "eslint-config-prettier": "^8.2.0",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "concurrently": "^6.1.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^26.6.3",
     "prettier": "^2.2.1",
+    "ts-jest": "^26.5.6",
     "typescript": "^4.2.4"
   }
 }

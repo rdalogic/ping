@@ -21,7 +21,7 @@ export class WinParser extends BaseParser {
   _processHeader(line: string): void {
     // XXX: Expect to find [****] when pinging domain like google.com
     //      Read fixture/win/**/* for the detail
-    const isPingNumeric = line.indexOf("[") === -1;
+    const isPingNumeric = !line.includes("[");
 
     // Get host and numeric_host
     const tokens = line.split(" ");
@@ -32,7 +32,7 @@ export class WinParser extends BaseParser {
       this._response.numeric_host = this._response.host;
     } else {
       // For those has [***], anchor with such token
-      const numericHost = tokens.find((t) => t.indexOf("[") !== -1);
+      const numericHost = tokens.find((t) => t.includes("["));
       if (numericHost) {
         const numericHostIndex = tokens.indexOf(numericHost);
         const match = /\[(.*)\]/.exec(numericHost);
@@ -58,7 +58,7 @@ export class WinParser extends BaseParser {
   _processIPV6Body(line: string): void {
     const tokens = line.split(" ");
     let dataFields = tokens.filter((token) => {
-      return token.indexOf("=") >= 0 || token.indexOf("<") >= 0;
+      return token.includes("=") || token.includes("<");
     });
 
     // refs #65: Support system like french which has an extra space
@@ -101,7 +101,7 @@ export class WinParser extends BaseParser {
   _processIPV4Body(line: string): void {
     const tokens = line.split(" ");
     const byteTimeTTLFields = tokens.filter((token) => {
-      return token.indexOf("=") >= 0 || token.indexOf("<") >= 0;
+      return token.includes("=") || token.includes("<");
     });
 
     const expectDataFieldInReplyLine = 3;
@@ -110,7 +110,7 @@ export class WinParser extends BaseParser {
       const packetSize = this._pingConfig.packetSize;
       const byteField = byteTimeTTLFields.find((dataField) => {
         const packetSizeToken = util.format("=%d", packetSize);
-        return dataField.indexOf(packetSizeToken) >= 0;
+        return dataField.includes(packetSizeToken);
       });
 
       if (byteField) {

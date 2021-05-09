@@ -20,7 +20,7 @@ export class LinuxParser extends BaseParser {
   _processHeader(line: string): void {
     // Get host and numeric_host
     const tokens = line.split(" ");
-    const isProbablyIPv4 = tokens[1].indexOf("(") === -1;
+    const isProbablyIPv4 = !tokens[1].includes("(");
 
     if (isProbablyIPv4) {
       this._response.host = tokens[1];
