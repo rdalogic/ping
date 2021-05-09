@@ -42,7 +42,7 @@ export class MacParser extends BaseParser {
     }
 
     // Change state if it see a '---'
-    if (line.indexOf("---") >= 0) {
+    if (line.includes("---")) {
       this._changeState(STATES.FOOTER);
     }
   }
